@@ -5,6 +5,7 @@ import Authlayout from '../../layout/Authlayout';
 import history from "next/router";
 import { toast } from "react-toastify";
 import UseApi from '../../Hooks/UseApi';
+import Cookies from 'js-cookie';
 const login = () => {
 
   const {usePost} =UseApi()
@@ -37,7 +38,7 @@ const login = () => {
     const {status,data} = await usePost('user/login', user)
     if (status===200) {
       localStorage.setItem('user',JSON.stringify( data.user))
-      document.cookie = `tkn=${data.token}`;
+      Cookies.set("tkn", data.token);
       history.push('/')
       toast.success("Login Successful!")
     }

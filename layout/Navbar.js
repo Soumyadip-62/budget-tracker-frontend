@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Edit, Pocket } from "react-feather";
 import styles from "../styles/Home.module.css";
 import Script from "next/script";
 import Link from "next/link";
 import Head from "next/head";
-function Navbar() {
+import Cookies from "js-cookie";
+
+const Navbar = () => {
+  const [token, settoken] = useState(Cookies.get("tkn"));
+  const name = "tkn";
+
+  
+
+
   const Navitems = [
     { name: "Dashboard", path: "/" },
     { name: "Accounts", path: "/accounts" },
@@ -54,11 +62,34 @@ function Navbar() {
                 </li>
               ))}
             </ul>
+
+            {/* {token !== null && (
+              <ul className="navbar-nav">
+                <li>
+                  <Link href={"/auth/login"}>
+                    <a
+                      style={{
+                        color: "rgb(77, 146, 8)",
+                        fontWeight: "bolder",
+                        padding: "10px",
+                      }}
+                    >
+                      {" "}
+                      Login
+                    </a>
+                  </Link>
+                </li>
+              </ul>
+            )} */}
           </div>
         </div>
       </nav>
     </div>
   );
+};
+
+export async function getServerSideProps(context) {
+  return { props: { token: "gshghggsgyg" } };
 }
 
 export default Navbar;
