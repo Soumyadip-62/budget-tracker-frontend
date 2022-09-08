@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-responsive-modal/styles.css";
 const Layout = ({ children }) => {
   return (
     <div>

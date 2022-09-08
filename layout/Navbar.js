@@ -6,19 +6,20 @@ import Script from "next/script";
 import Link from "next/link";
 import Head from "next/head";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const [token, settoken] = useState(Cookies.get("tkn"));
   const name = "tkn";
 
-  
+  const router = useRouter()
 
 
   const Navitems = [
     { name: "Dashboard", path: "/" },
     { name: "Accounts", path: "/accounts" },
     { name: "Transanctions", path: "/transanctions" },
-    { name: "Analytics", path: "/" },
+    
   ];
   return (
     <div>
@@ -61,6 +62,17 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
+              {/* <button
+                className="rounded-md bg-gray-300 p-1 md:ml-6 mt-2 w-auto  font-bold"
+                onClick={() =>
+                  router.push({
+                    pathname: "/transanctions",
+                    query: { showadd: "open" },
+                  })
+                }
+              >
+                Add Transanction +
+              </button> */}
             </ul>
 
             {/* {token !== null && (

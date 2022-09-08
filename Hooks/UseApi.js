@@ -6,33 +6,29 @@ import Cookies from "js-cookie";
 export default function UseApi() {
   // ?useful variables
   // const context = useContext(ContextProvider);
-  
-  const url = " http://localhost:1337/";
- 
-//   const name = "tkn";
-let token = Cookies.get('tkn');
-//  const  getCookie = (cname)=> {
-//    let name = cname + "=";
-//    let decodedCookie = decodeURIComponent(document.cookie);
-//    let ca = decodedCookie.split(";");
-//    for (let i = 0; i < ca.length; i++) {
-//      let c = ca[i];
-//      while (c.charAt(0) == " ") {
-//        c = c.substring(1);
-//      }
-//      if (c.indexOf(name) == 0) {
-       
-//        token = c.substring(name.length, c.length);
-//      }
-//    }
-//    return "";
-//  }
 
+  const url = " http://localhost:1337/"; //https://bugdet-tracker-mern.herokuapp.com/
 
+  //   const name = "tkn";
+  let token = Cookies.get("tkn");
+  //  const  getCookie = (cname)=> {
+  //    let name = cname + "=";
+  //    let decodedCookie = decodeURIComponent(document.cookie);
+  //    let ca = decodedCookie.split(";");
+  //    for (let i = 0; i < ca.length; i++) {
+  //      let c = ca[i];
+  //      while (c.charAt(0) == " ") {
+  //        c = c.substring(1);
+  //      }
+  //      if (c.indexOf(name) == 0) {
 
-//  getCookie(name);
-  
+  //        token = c.substring(name.length, c.length);
+  //      }
+  //    }
+  //    return "";
+  //  }
 
+  //  getCookie(name);
 
   // const token =
   //  cookie.match("(^|;)\\s*" + "tkn" + "\\s*=\\s*([^;]+)")?.pop() ||
