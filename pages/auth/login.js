@@ -6,6 +6,7 @@ import history from "next/router";
 import { toast } from "react-toastify";
 import UseApi from '../../Hooks/UseApi';
 import Cookies from 'js-cookie';
+import { LogIn } from 'react-feather';
 const login = () => {
 
   const {usePost} =UseApi()
@@ -84,11 +85,11 @@ const login = () => {
         {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
       </div>
       <button
-        className="bg-primary hover:bg-hover duration-300 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className="bg-primary flex justify-center gap-2 hover:bg-hover duration-300 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         type="button"
         onClick={()=>validate(handleSubmit)}
       >
-       Log In
+       Log In <LogIn/>
       </button>
       <div className="grid grid-cols-1 text-center my-4">
         <Link href="/auth/forgotPassword">

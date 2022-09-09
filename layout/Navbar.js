@@ -1,26 +1,136 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 
-import { Edit, Pocket } from "react-feather";
+import { Edit, LogOut, Pocket } from "react-feather";
 import styles from "../styles/Home.module.css";
 import Script from "next/script";
 import Link from "next/link";
 import Head from "next/head";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import UseApi from "../Hooks/UseApi";
+import { toast } from "react-toastify";
+import Modal from "../components/Modal/Modal";
 
 const Navbar = () => {
   const [token, settoken] = useState(Cookies.get("tkn"));
   const name = "tkn";
+  const [profile, setprofile] = useState({});
+  const { useGet, usePost, usePut } = UseApi();
+  async function getUserdata() {
+    const { data, status } = await useGet("user/profile");
+    console.log(data);
+    if (status === 200) {
+      setprofile(data.user);
+    }
+  }
 
-  const router = useRouter()
-
+  useEffect(() => {
+    getUserdata();
+  }, []);
+  const router = useRouter();
 
   const Navitems = [
     { name: "Dashboard", path: "/" },
     { name: "Accounts", path: "/accounts" },
     { name: "Transanctions", path: "/transanctions" },
-    
+    // {
+    //   name:"Profile", path:'/profile'
+    // }
   ];
+
+  // !states And fucntions related to edit profile
+  const [editModal, seteditModal] = useState(false);
+  const [user, setuser] = useState({
+    uname: "",
+    fname: "",
+  });
+
+  const openEditModal = () => {
+    seteditModal(true);
+    setuser({
+      uname: profile.userName,
+      fname: profile.fullName,
+    });
+  };
+  const CloseeditModal = () => {
+    seteditModal(false);
+    setuser({
+      uname: "",
+      fname: "",
+    });
+  };
+
+  const handleEditchange = (e) => {
+    setuser({
+      ...user,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleEdit = async () => {
+    const { data, status } = await usePut("user/edit_profile", user);
+    if (status === 200) {
+      getUserdata()
+      toast.success('Profile Updated Succesfully')
+      CloseeditModal()
+    }else{
+      toast.error('Something went wrong')
+    }
+  };
+
+
+  // !All states and fucntions related to change pasowrd
+  const [changePassModal, setchangePassModal] = useState(false);
+  const [pass, setpass] = useState({
+    password:"",
+    new_password1:'',
+    new_password2:""
+  })
+
+  const openChangePassModal =()=>{
+    setchangePassModal(true)
+  }
+  const closeChangePassModal =()=>{
+    setchangePassModal(false)
+    setpass({
+      password: "",
+      new_password1: "",
+      new_password2: "",
+    });
+  }
+
+  const handleChangePasswordEdit=(e)=>{
+    setpass({
+      ...pass,
+      [e.target.id]:e.target.value
+    })
+
+
+  }
+
+  const handleChangePassword=async ()=>{
+    const {data,status} = await usePut("user/change_password", pass);
+    console.log(data);
+    if (status===200) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      Cookies.remove('tkn')
+      Cookies.set("tkn", data.token);
+      toast.success('Password Updated')
+      closeChangePassModal()
+    }
+  }
+
+
+  // !logout fucntion
+  async function Logout() {
+    const { status, data } = await useGet("user/logout");
+    if (status === 200) {
+      toast.warn("Logged Out Successfully");
+      Cookies.remove("tkn");
+      router.push("/auth/login");
+    }
+  }
   return (
     <div>
       <Head>
@@ -42,6 +152,7 @@ const Navbar = () => {
               <Pocket color="green" />
             </a>
           </Link>
+
           <button
             className="navbar-toggler"
             type="button"
@@ -54,7 +165,7 @@ const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse " id="navbarNav">
-            <ul className="navbar-nav">
+            <ul className="navbar-nav ">
               {Navitems.map((item, id) => (
                 <li className="" key={id}>
                   <Link href={item.path}>
@@ -62,40 +173,168 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              {/* <button
-                className="rounded-md bg-gray-300 p-1 md:ml-6 mt-2 w-auto  font-bold"
-                onClick={() =>
-                  router.push({
-                    pathname: "/transanctions",
-                    query: { showadd: "open" },
-                  })
-                }
-              >
-                Add Transanction +
-              </button> */}
             </ul>
+            <ul className="navbar-nav">
+              {" "}
+              <li className="nav-item dropdown">
+                <a
+                  className="px-2 dropdown-toggle hover:font-bold hover:text-hover"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Welcome {profile.userName}
+                </a>
 
-            {/* {token !== null && (
-              <ul className="navbar-nav">
-                <li>
-                  <Link href={"/auth/login"}>
-                    <a
-                      style={{
-                        color: "rgb(77, 146, 8)",
-                        fontWeight: "bolder",
-                        padding: "10px",
-                      }}
-                    >
-                      {" "}
-                      Login
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            )} */}
+                <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
+                  <li className="p-2 rounded-lg m-0 ">
+                    <div className="card w-80 bg-secondary text-white">
+                      <div className="card-body">
+                        <h5 className="card-title font-bold text-2xl  flex justify-between">
+                          {profile.fullName}{" "}
+                          <button onClick={() => openEditModal()}>
+                            <Edit />
+                          </button>
+                        </h5>
+                        <p className="card-text">
+                          Email :{" "}
+                          <span className="font-semibold">{profile.email}</span>{" "}
+                        </p>
+                        <p className="card-text">
+                          User Name :{" "}
+                          <span className="font-semibold">
+                            {profile.userName}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="card-footer text-white">
+                        <a
+                          className=""
+                          href="#"
+                          onClick={() => openChangePassModal()}
+                        >
+                          Change Password
+                        </a>
+                        <a
+                          className=" flex justify-start gap-2"
+                          role="button"
+                          onClick={() => Logout()}
+                          href="#"
+                        >
+                          Logout <LogOut />
+                        </a>
+                      </div>
+                    </div>{" "}
+                  </li>
+                  {/* <li></li>
+
+                  <li></li> */}
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
+      <Modal
+        open={editModal}
+        onClose={CloseeditModal}
+        SubmitFunction={handleEdit}
+      >
+        <form className=" rounded px-8 pt-6 pb-8 bg-background">
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="username"
+            >
+              Username
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="uname"
+              type="text"
+              value={user.uname}
+              onChange={(e) => handleEditchange(e)}
+              placeholder="Username"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="fullname"
+            >
+              Full Name
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="fname"
+              type="text"
+              value={user.fname}
+              onChange={(e) => handleEditchange(e)}
+              placeholder="Full Name"
+            />
+          </div>
+        </form>
+      </Modal>
+
+      {/* change password modal */}
+      <Modal
+        open={changePassModal}
+        onClose={closeChangePassModal}
+        SubmitFunction={handleChangePassword}
+      >
+        <form className=" rounded px-8 pt-6 pb-8 bg-background">
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Current Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              type="text"
+              value={pass.password}
+              onChange={(e) => handleChangePasswordEdit(e)}
+              placeholder="Current Password"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="new_password1"
+              type="text"
+              value={pass.new_password1}
+              onChange={(e) => handleChangePasswordEdit(e)}
+              placeholder="New Password"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="confirm"
+            >
+              Confirm Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="new_password2"
+              type="text"
+              value={pass.new_password2}
+              onChange={(e) => handleChangePasswordEdit(e)}
+              placeholder="Confirm New Password"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

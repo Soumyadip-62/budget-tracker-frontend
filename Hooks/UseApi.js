@@ -108,7 +108,7 @@ export default function UseApi() {
         return response.json();
       })
       .then((res) => {
-        response = res.data;
+        response = res;
       });
     const res = { status: status, data: response };
     return res;

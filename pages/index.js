@@ -7,12 +7,17 @@ import { useEffect, useLayoutEffect } from "react";
 import Layout from "../layout/Layout";
 import Accounts from "../components/Dashboard/Accounts";
 import Transanctions from "../components/Dashboard/Transanctions";
+import Cookies from "js-cookie";
 
 export default function Home() {
 
-  useEffect(() => {
-    // history.replace("/accounts")
-  
+  useLayoutEffect(() => {
+    let token = Cookies.get("tkn");
+    if (!token) {
+      
+      history.replace("/auth/login")
+    
+    }
    
   }, [])
   

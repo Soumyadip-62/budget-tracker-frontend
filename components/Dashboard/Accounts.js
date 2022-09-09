@@ -54,7 +54,7 @@ const Accounts = () => {
                   : "p-3 m-2 rounded-md bg-official w-auto md:w-auto md:p-4 md:m-4"
               }
             >
-              <span className="text-xl p-2">{acc.accName}</span>
+              <span className="text-xl p-2">{acc.accName.toUpperCase()}</span>
               <h3 className="rounded-md text-3xl px-2 py-1 ">
                 <Link href={`/accountdetails/${acc._id}`}>
                   {`₹${acc.balance}`}

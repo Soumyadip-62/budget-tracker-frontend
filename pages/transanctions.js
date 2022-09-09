@@ -12,13 +12,12 @@ import { toast } from "react-toastify";
 import { categories } from "../utils/ListOfcategory";
 import { paymentType } from "../utils/ListOfpaymentTypes";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const transanctions = () => {
   const router = useRouter();
   const query = router.query;
- if (query){
-  console.log(query.showadd);
- };
+ 
   const {useGet,usePost,usePut}= UseApi()
   const [records, setrecords] = useState([])
   const [isLoading, setisLoading] = useState(true)
@@ -51,7 +50,10 @@ const transanctions = () => {
   async function getUserData() {
     const { data, status } = await useGet("rec/get/user");
     const account = await useGet("acc/get");
-    setaccounts(account.data.accounts)
+    if (account.status ===200) {
+      
+      setaccounts(account.data.accounts)
+    }
     console.log(data,status);
     if (status === 200) {
       setrecords(data.records);
@@ -63,11 +65,16 @@ const transanctions = () => {
     }
   }
    useEffect(() => {
+    let token = Cookies.get("tkn");
+    if (!token) {
+      router.replace("/auth/login");
+    }
      getUserData();
    }, []);
 // !fucntions related to add 
 
 function handleChange(e) {
+  console.log(newRecord);
   setnewRecord({
     ...newRecord,
     [e.target.id] : e.target.value
@@ -116,7 +123,7 @@ function closeAddModal() {
 
   //!  fucntions related to edit 
 
-function handleChange(e) {
+function handleChangeEdit(e) {
   setrecordEdit({
     ...recordEdit,
     [e.target.id]:e.target.value
@@ -131,11 +138,19 @@ function  handleRecordTypeforEDIT(type) {
 }
 
   function onOpenModal(rec) {
+    let Amount;
+    if (rec.rType === "minus") {
+      Amount = rec.amount.toString().slice(1);
+      console.log(Amount);
+    }
+    else{
+      Amount = rec.amount
+    }
     seteditModal(true)
     setrecordEdit({
       id:rec._id,
       rType:rec.rType,
-      amount:rec.amount,
+      amount:Amount,
       desc:rec.desc,
       note:rec.note,
       paymentType:rec.paymentType,
@@ -204,13 +219,13 @@ function  handleRecordTypeforEDIT(type) {
       <Head>
         <title>Transanctions</title>
       </Head>
-      <div className="p-4 m-4 rounded-md bg-background w-10/12 md:w-96 md:p-4 md:m-4">
+      <div className="grid grid-cols-1 p-4 m-4 rounded-md bg-background w-10/12 md:w-96 md:p-4 md:m-4">
         <span className="text-3xl p-3">Transanctions</span>
         <button
-          className="rounded-md px-2 py-1 bg-hover text-white"
+          className="rounded-md bg-gray-600  p-2 ml-1.5  w-auto text-white font-bold"
           onClick={() => openAddModal()}
         >
-          Add +
+          Add Transaction +
         </button>
       </div>
       <div className="flex flex-col p-6 my-4">
@@ -240,7 +255,9 @@ function  handleRecordTypeforEDIT(type) {
                     </tr>
                   ) : records.length <= 0 ? (
                     <tr>
-                      <td>No Records Found</td>
+                      <td className="text-black font-semibold text-2xl">
+                        No Transanctions Found
+                      </td>
                     </tr>
                   ) : (
                     records.map((rec, id) => (
@@ -253,9 +270,9 @@ function  handleRecordTypeforEDIT(type) {
                         key={id}
                       >
                         <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                          {rec.account.accName}
+                          {rec.account.accName.toUpperCase()}
                         </td>
-                        <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
                           {rec.desc}
                         </td>
                         <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
@@ -333,7 +350,7 @@ function  handleRecordTypeforEDIT(type) {
                     type="text"
                     name="accType"
                     value={recordEdit.desc}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => handleChangeEdit(e)}
                   >
                     {" "}
                     <option>Choose</option>
@@ -356,7 +373,7 @@ function  handleRecordTypeforEDIT(type) {
                     id="amount"
                     type="text"
                     value={recordEdit.amount}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => handleChangeEdit(e)}
                   />
                 </div>
               </div>
@@ -375,7 +392,7 @@ function  handleRecordTypeforEDIT(type) {
                     type="text"
                     name="accType"
                     value={recordEdit.paymentType}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => handleChangeEdit(e)}
                   >
                     {" "}
                     <option>Choose</option>
@@ -398,7 +415,7 @@ function  handleRecordTypeforEDIT(type) {
                     id="date"
                     type="date"
                     value={recordEdit.date}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => handleChangeEdit(e)}
                   />
                 </div>
               </div>
@@ -416,7 +433,7 @@ function  handleRecordTypeforEDIT(type) {
                 type="text"
                 maxLength="50"
                 value={recordEdit.note}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChangeEdit(e)}
               />
             </div>
           </form>

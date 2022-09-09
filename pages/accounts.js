@@ -19,6 +19,7 @@ import Loading from "../components/common/Loading";
 // import { Modal } from "react-responsive-modal";
 import Modal from "../components/Modal/Modal";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const accounts = () => {
   const router = useRouter();
@@ -44,6 +45,7 @@ const accounts = () => {
   });
 
   const [editedAcc, seteditedAcc] = useState({
+    id:"",
     accName: "",
     accType: "",
     balance: 0,
@@ -172,6 +174,10 @@ const accounts = () => {
     }
   };
   useEffect(() => {
+    let token = Cookies.get("tkn");
+    if (!token) {
+      router.replace("/auth/login");
+    }
     getUserData();
   }, []);
 
@@ -183,7 +189,7 @@ const accounts = () => {
       <div className="grid grid-cols-1 p-2 m-3  rounded-md bg-background w-11/12 md:w-96 md:p-4 md:m-4 ">
         <span className="text-3xl p-3">Total Balance : ₹{total}</span>
         <button
-          className="rounded-md px-2 py-1 bg-hover text-white"
+          className="rounded-md bg-gray-600  p-2 ml-1.5  w-auto text-white font-bold"
           onClick={() => setshowAdd(true)}
         >
           Add Account +
@@ -295,7 +301,7 @@ const accounts = () => {
                         </td>
                         <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
                           <Link href={`/accountdetails/${acc._id}`}>
-                            {acc.accName}
+                            {acc.accName.toUpperCase()}
                           </Link>
                         </td>
 

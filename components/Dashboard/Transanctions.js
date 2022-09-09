@@ -101,7 +101,7 @@ const Transanctions = () => {
                             }
                           >
                             <Link href={`/accountdetails/${rec.account._id}`}>
-                              {rec.account.accName}
+                              {rec.account.accName.toUpperCase()}
                             </Link>
                           </td>
 
