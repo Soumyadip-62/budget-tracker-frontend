@@ -15,20 +15,25 @@ import Modal from "../components/Modal/Modal";
 const Navbar = () => {
   const [token, settoken] = useState(Cookies.get("tkn"));
   const name = "tkn";
+  const router = useRouter();
+
   const [profile, setprofile] = useState({});
   const { useGet, usePost, usePut } = UseApi();
+
   async function getUserdata() {
     const { data, status } = await useGet("user/profile");
     console.log(data);
     if (status === 200) {
       setprofile(data.user);
+    } else if (status === 403) {
+      toast.warn('Please Login!')
+      router.replace('/auth/login')
     }
   }
 
   useEffect(() => {
     getUserdata();
   }, []);
-  const router = useRouter();
 
   const Navitems = [
     { name: "Dashboard", path: "/" },
@@ -115,7 +120,7 @@ const Navbar = () => {
     if (status===200) {
       localStorage.setItem("user", JSON.stringify(data.user));
       Cookies.remove('tkn')
-      Cookies.set("tkn", data.token);
+      Cookies.set("tkn", data.token, { expires: 7 });
       toast.success('Password Updated')
       closeChangePassModal()
     }

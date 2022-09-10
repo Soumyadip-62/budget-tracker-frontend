@@ -11,14 +11,17 @@ import UseApi from "../../Hooks/UseApi";
 import Layout from "../../layout/Layout";
 import { categories } from "../../utils/ListOfcategory";
 import { paymentType } from "../../utils/ListOfpaymentTypes";
+import { NextPageContext } from "next";
 
-const AccDetails = () => {
+const AccDetails = (props) => {
+
+  
   const { useGet, usePost, usePut } = UseApi();
   const [records, setrecords] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [account, setaccount] = useState({});
   const [accounts, setaccounts] = useState([]);
-
+const [accID, setaccID] = useState("");
   const [showAdd, setshowAdd] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
@@ -43,7 +46,9 @@ const AccDetails = () => {
     date: "",
   });
   const router = useRouter();
-  const { id } = router.query;
+  const {id} = router.query
+  
+  console.log("query", router.query);
 
   // !functions related to add
   function handleChange(e) {
@@ -181,6 +186,7 @@ const AccDetails = () => {
     }
   }
   async function getUserData() {
+    
     const { data, status } = await useGet("rec/get/acc/" + id);
 const account = await useGet("acc/get");
 setaccounts(account.data.accounts);
@@ -195,7 +201,13 @@ setaccounts(account.data.accounts);
       toast.warn("You Are Unauthorized, Please Login Again! ");
     }
   }
+  
   useEffect(() => {
+    
+    if (!id) {
+      router.back()
+    }
+   
     getUserData();
   }, []);
 
@@ -256,7 +268,9 @@ setaccounts(account.data.accounts);
   return (
     <div>
       <Head>
-        <title>{account.accName ?account.accName.toUpperCase() : "Account Details" }</title>
+        <title>
+          {account.accName ? account.accName.toUpperCase() : "Account Details"}
+        </title>
       </Head>
       <div
         className={
@@ -403,7 +417,7 @@ setaccounts(account.data.accounts);
             </button>
           </div>
           <form className=" shadow-lg rounded px-8 pt-6 pb-8 ">
-            <div className="flex justify-evenly">
+            <div className="md:flex md:gap-3 flex gap-2  justify-evenly">
               <div>
                 {" "}
                 <div className="mb-4">
@@ -533,7 +547,7 @@ setaccounts(account.data.accounts);
               Income
             </button>
           </div>
-          <form className=" shadow-lg rounded px-8 pt-6 pb-8 md:flex md:gap-3 justify-evenly ">
+          <form className=" shadow-lg rounded px-8 pt-6 pb-8 md:flex md:gap-3 flex gap-2 justify-evenly ">
             <div>
               {" "}
               <div className="mb-4">
@@ -552,7 +566,7 @@ setaccounts(account.data.accounts);
                   onChange={(e) => handleChange(e)}
                 >
                   {" "}
-                  <option>Select Account</option>
+                  <option>Account</option>
                   {accounts.map((acc, id) => (
                     <option key={id} value={acc._id}>
                       {acc.accName} ({acc.accType})
@@ -596,6 +610,7 @@ setaccounts(account.data.accounts);
                   id="amount"
                   type="text"
                   value={newRecord.amount}
+                  placeholder="Amount"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -615,6 +630,7 @@ setaccounts(account.data.accounts);
                   type="text"
                   maxLength="50"
                   value={newRecord.note}
+                  placeholder="Note"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -748,5 +764,6 @@ setaccounts(account.data.accounts);
 AccDetails.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
+
 
 export default AccDetails;

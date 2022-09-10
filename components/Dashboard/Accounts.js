@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import UseApi from "../../Hooks/UseApi";
 import { useRouter } from "next/router";
+import Loading from "../common/Loading";
 const Accounts = () => {
   const [accounts, setaccounts] = useState([]);
   const { useGet, usePost, usePut } = UseApi();
@@ -24,7 +25,7 @@ const Accounts = () => {
     } else if (status === 403) {
       setisLoading(false);
       setaccounts([]);
-      toast.warn("You Are Unauthorized, Please Login Again! ");
+      // toast.warn("You Are Unauthorized, Please Login Again! ");
     }
   }
 
@@ -41,9 +42,15 @@ const Accounts = () => {
             <a className="text-sm font-thin text-black">See All</a>
           </Link>
         </h2>
-        <div className="sm:flex md:flex justify-start gap-3">
           {" "}
-          {accounts.slice(0, 4).map((acc, id) => (
+        <div className="sm:flex md:flex justify-start gap-3">
+         {isLoading ? (
+                      <tr>
+                        <td>
+                          <Loading />
+                        </td>
+                      </tr>
+                    )  :   accounts.slice(0, 3).map((acc, id) => (
             <div
               key={id}
               className={
@@ -72,7 +79,7 @@ const Accounts = () => {
                   })
                 }
               >
-                +
+               +
               </button>
             </h3>
           </div>

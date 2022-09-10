@@ -75,6 +75,9 @@ const accounts = () => {
     
   }
 
+  const closeshowAdd =()=>{
+    setshowAdd(false)
+  }
 
   const onOpenModal = (acc) => {
     seteditedAcc({
@@ -213,67 +216,72 @@ const accounts = () => {
                    
                   </tr>
                 </thead> */}
+                <Modal
+                  open={showAdd}
+                  onClose={closeshowAdd}
+                  SubmitFunction={handleSubmit}
+                >
+                  <form className="  rounded px-4 pt-4 pb-4  bg-background">
+                    <div className="mb-4">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="username"
+                      >
+                        Account Type
+                      </label>
+                      <select
+                        className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="accType"
+                        type="text"
+                        onChange={(e) => handleChange(e)}
+                      >
+                        <option>Select Account Type</option>
+                        <option className="text-personal " value="Personal">
+                          Personal
+                        </option>
+                        <option className="text-official " value="Official">
+                          Official
+                        </option>
+                        <option className="text-enterprice " value="Enterprice">
+                          Enterprice
+                        </option>
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="username"
+                      >
+                        Account Name
+                      </label>
+                      <input
+                        className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="accName"
+                        type="text"
+                        // value={user.password}
+                        onChange={(e) => handleChange(e)}
+                        placeholder="Account Name"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="username"
+                      >
+                        Initial Balance
+                      </label>
+                      <input
+                        className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="balance"
+                        type="text"
+                        // value={user.password}
+                        onChange={(e) => handleChange(e)}
+                        placeholder="Initial Balance"
+                      />
+                    </div>
+                  </form>
+                </Modal>
                 <tbody className="">
-                  {showAdd && (
-                    <tr className="my-6 border shadow-md p-2 hover:bg-background">
-                      <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                        <select
-                          className=" border  rounded-lg w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                          id="accType"
-                          type="text"
-                          onChange={(e) => handleChange(e)}
-                        >
-                          <option>Select Account Type</option>
-                          <option className="text-personal " value="Personal">
-                            Personal
-                          </option>
-                          <option className="text-official " value="Official">
-                            Official
-                          </option>
-                          <option
-                            className="text-enterprice "
-                            value="Enterprice"
-                          >
-                            Enterprice
-                          </option>
-                        </select>
-                      </td>
-                      <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                        <input
-                          className=" border  rounded-lg w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                          id="accName"
-                          type="text"
-                          // value={user.password}
-                          onChange={(e) => handleChange(e)}
-                          placeholder="Account Name"
-                        />
-                      </td>
-                      <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                        <input
-                          className=" border  rounded-lg w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                          id="balance"
-                          type="text"
-                          // value={user.password}
-                          onChange={(e) => handleChange(e)}
-                          placeholder="Initial Balance"
-                        />
-                      </td>
-                      <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                        <button
-                          className="bg-hover duration-300 w-full text-white font-bold py-3 px-3 mb-3 rounded focus:outline-none focus:shadow-outline"
-                          type="button"
-                          onClick={() => validate(handleSubmit)}
-                        >
-                          Submit
-                        </button>
-                      </td>
-                      <td className="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                        <button onClick={() => setshowAdd(false)}>
-                          <Trash color="green" />
-                        </button>
-                      </td>
-                    </tr>
-                  )}
                   {isLoading ? (
                     <tr>
                       <td>
@@ -282,7 +290,9 @@ const accounts = () => {
                     </tr>
                   ) : accounts.length <= 0 ? (
                     <tr>
-                      <td>No Accounts Found</td>
+                      <td className="text-black text-center font-semibold text-2xl">
+                        No Accounts Found
+                      </td>
                     </tr>
                   ) : (
                     accounts.map((acc, id) => (

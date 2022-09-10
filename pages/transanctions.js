@@ -118,6 +118,15 @@ function openAddModal() {
 
 function closeAddModal() {
   setshowAdd(false)
+  setnewRecord({
+    account: "",
+    rType: "minus",
+    amount: "",
+    desc: "",
+    note: "",
+    paymentType: "",
+    date: "",
+  });
   
 }
 
@@ -334,10 +343,10 @@ function  handleRecordTypeforEDIT(type) {
             </button>
           </div>
           <form className=" shadow-lg rounded px-8 pt-6 pb-8 ">
-            <div className="flex justify-evenly">
+            <div className="md:flex md:gap-3 flex gap-2 justify-evenly">
               <div>
                 {" "}
-                <div className="mb-4">
+                <div className="mb-2">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
@@ -361,7 +370,7 @@ function  handleRecordTypeforEDIT(type) {
                     ))}
                   </select>
                 </div>
-                <div className="mb-4">
+                <div className="mb-2">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
@@ -379,7 +388,7 @@ function  handleRecordTypeforEDIT(type) {
               </div>
               <div>
                 {" "}
-                <div className="mb-4">
+                <div className="mb-2">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
@@ -403,7 +412,7 @@ function  handleRecordTypeforEDIT(type) {
                     ))}
                   </select>
                 </div>
-                <div className="mb-4">
+                <div className="mb-2">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
@@ -420,7 +429,7 @@ function  handleRecordTypeforEDIT(type) {
                 </div>
               </div>
             </div>
-            <div className="mb-4">
+            <div className="mb-2">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="username"
@@ -433,6 +442,7 @@ function  handleRecordTypeforEDIT(type) {
                 type="text"
                 maxLength="50"
                 value={recordEdit.note}
+                placeholder="Note"
                 onChange={(e) => handleChangeEdit(e)}
               />
             </div>
@@ -465,7 +475,7 @@ function  handleRecordTypeforEDIT(type) {
               Income
             </button>
           </div>
-          <form className=" shadow-lg rounded px-8 pt-6 pb-8 md:flex md:gap-3 justify-evenly ">
+          <form className=" shadow-lg rounded px-8 pt-6 pb-8 flex gap-2 md:flex md:gap-3 justify-evenly ">
             <div>
               {" "}
               <div className="mb-4">
@@ -484,7 +494,7 @@ function  handleRecordTypeforEDIT(type) {
                   onChange={(e) => handleChange(e)}
                 >
                   {" "}
-                  <option>Select Account</option>
+                  <option>Account</option>
                   {accounts.map((acc, id) => (
                     <option key={id} value={acc._id}>
                       {acc.accName} ({acc.accType})
@@ -528,6 +538,7 @@ function  handleRecordTypeforEDIT(type) {
                   id="amount"
                   type="text"
                   value={newRecord.amount}
+                  placeholder="Amount"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -547,6 +558,7 @@ function  handleRecordTypeforEDIT(type) {
                   type="text"
                   maxLength="50"
                   value={newRecord.note}
+                  placeholder="Note"
                   onChange={(e) => handleChange(e)}
                 />
               </div>

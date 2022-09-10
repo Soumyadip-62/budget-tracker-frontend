@@ -39,7 +39,7 @@ const login = () => {
     const {status,data} = await usePost('user/login', user)
     if (status===200) {
       localStorage.setItem('user',JSON.stringify( data.user))
-      Cookies.set("tkn", data.token);
+      Cookies.set("tkn", data.token, { expires: 7 });
       history.push('/')
       toast.success("Login Successful!")
     }

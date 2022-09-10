@@ -52,7 +52,7 @@ const Transanctions = () => {
           Add Transanction +
         </button>
 
-        <div className="flex flex-col p-3 my-4">
+        <div className="flex flex-col  my-4">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
               <div className="overflow-hidden">
@@ -79,7 +79,9 @@ const Transanctions = () => {
                       </tr>
                     ) : records.length <= 0 ? (
                       <tr>
-                        <td>No Records Found</td>
+                        <td className="text-black font-semibold text-2xl">
+                          No Transanctions Found
+                        </td>
                       </tr>
                     ) : (
                       records.map((rec, id) => (

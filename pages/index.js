@@ -3,20 +3,23 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import history from "next/router"
 
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Layout from "../layout/Layout";
 import Accounts from "../components/Dashboard/Accounts";
 import Transanctions from "../components/Dashboard/Transanctions";
 import Cookies from "js-cookie";
+import Loading from "../components/common/Loading";
 
 export default function Home() {
-
+  const [token, settoken] = useState('')
   useLayoutEffect(() => {
     let token = Cookies.get("tkn");
     if (!token) {
       
       history.replace("/auth/login")
     
+    } else{
+      settoken(token)
     }
    
   }, [])
@@ -29,8 +32,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Accounts/>
-      <Transanctions/>
+   {token? <><Accounts/>
+      <Transanctions/></> : <Loading/>}  
     </div>
   );
 }
