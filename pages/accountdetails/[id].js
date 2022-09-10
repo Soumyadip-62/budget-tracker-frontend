@@ -273,34 +273,38 @@ setaccounts(account.data.accounts);
           {account.accName ? account.accName.toUpperCase() : "Account Details"}
         </title>
       </Head>
-      {isAccLoading? <Loading/> :<div
-        className={
-          account.accType === "Personal"
-            ? "p-3 m-3 rounded-xl bg-personal shadow-md  w-auto md:max-w-xs md:w-64  text-white"
-            : account.accType === "Enterprice"
-            ? "p-3 m-3 rounded-xl bg-enterprice shadow-md  w-auto md:max-w-xs md:w-64  text-white"
-            : account.accType === "Official"
-            ? "p-3 m-3 rounded-xl bg-official shadow-md  w-auto md:max-w-xs md:w-64  text-white"
-            : "p-3 m-3 rounded-xl  shadow-md  text-white w-auto md:max-w-xs md:w-64 "
-        }
-      >
-        <div className="px-6">
-          <h3 className="text-3xl font-bolder">
-            {account.accName && account.accName.toUpperCase()}
-          </h3>
-          <p className=" font-thin">{account.accType}</p>
-          <div className="flex justify-between">
-            {" "}
-            <h2 className="text-4xl my-2">
-              ₹{account.balance}{" "}
-              <span className="text-2xl">{account.currency}</span>
-            </h2>
-            <button className="my-2 pt-1" onClick={() => openAcceditModal()}>
-              <Edit2 />
-            </button>
+      {isAccLoading ? (
+        <Loading />
+      ) : (
+        <div
+          className={
+            account.accType === "Personal"
+              ? "p-3 m-3 rounded-xl bg-personal shadow-md  w-auto md:max-w-xs md:w-64  text-white"
+              : account.accType === "Enterprice"
+              ? "p-3 m-3 rounded-xl bg-enterprice shadow-md  w-auto md:max-w-xs md:w-64  text-white"
+              : account.accType === "Official"
+              ? "p-3 m-3 rounded-xl bg-official shadow-md  w-auto md:max-w-xs md:w-64  text-white"
+              : "p-3 m-3 rounded-xl  shadow-md  text-white w-auto md:max-w-xs md:w-64 "
+          }
+        >
+          <div className="px-6">
+            <h3 className="text-3xl font-bolder">
+              {account.accName && account.accName.toUpperCase()}
+            </h3>
+            <p className=" font-thin">{account.accType}</p>
+            <div className="flex justify-between">
+              {" "}
+              <h2 className="text-4xl my-2">
+                ₹{account.balance}{" "}
+                <span className="text-2xl">{account.currency}</span>
+              </h2>
+              <button className="my-2 pt-1" onClick={() => openAcceditModal()}>
+                <Edit2 />
+              </button>
+            </div>
           </div>
         </div>
-      </div>}
+      )}
       <div className="p-3 m-3 mt-12 rounded-xl bg-background shadow-md  text-white">
         <h2 className="text-3xl p-2 my-1 text-hover font-semibold">
           Transanctions From This Account
@@ -312,7 +316,7 @@ setaccounts(account.data.accounts);
           Add Transanction
         </button>
 
-        <div className="flex flex-col p-3 my-4">
+        <div className="flex flex-col  my-4">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
               <div className="overflow-hidden">
@@ -468,24 +472,16 @@ setaccounts(account.data.accounts);
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
                   >
-                    Payment Type
+                    Note
                   </label>
-                  <select
+                  <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="paymentType"
+                    id="note"
                     type="text"
-                    name="accType"
-                    value={recordEdit.paymentType}
+                    maxLength="50"
+                    value={recordEdit.note}
                     onChange={(e) => handleChangeEdit(e)}
-                  >
-                    {" "}
-                    <option>Choose</option>
-                    {paymentType.map((cat, id) => (
-                      <option key={id} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
                 <div className="mb-4">
                   <label
@@ -509,16 +505,24 @@ setaccounts(account.data.accounts);
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="username"
               >
-                Note
+                Payment Type
               </label>
-              <input
+              <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="note"
+                id="paymentType"
                 type="text"
-                maxLength="50"
-                value={recordEdit.note}
+                name="accType"
+                value={recordEdit.paymentType}
                 onChange={(e) => handleChangeEdit(e)}
-              />
+              >
+                {" "}
+                <option>Choose</option>
+                {paymentType.map((cat, id) => (
+                  <option key={id} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
             </div>
           </form>
         </div>

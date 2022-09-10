@@ -393,24 +393,17 @@ function  handleRecordTypeforEDIT(type) {
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="username"
                   >
-                    Payment Type
+                    Note
                   </label>
-                  <select
+                  <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="paymentType"
+                    id="note"
                     type="text"
-                    name="accType"
-                    value={recordEdit.paymentType}
+                    maxLength="50"
+                    value={recordEdit.note}
+                    placeholder="Note"
                     onChange={(e) => handleChangeEdit(e)}
-                  >
-                    {" "}
-                    <option>Choose</option>
-                    {paymentType.map((cat, id) => (
-                      <option key={id} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
                 <div className="mb-2">
                   <label
@@ -428,23 +421,30 @@ function  handleRecordTypeforEDIT(type) {
                   />
                 </div>
               </div>
-            </div>
+            </div>{" "}
             <div className="mb-2">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="username"
               >
-                Note
+                Payment Type
               </label>
-              <input
+              <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="note"
+                id="paymentType"
                 type="text"
-                maxLength="50"
-                value={recordEdit.note}
-                placeholder="Note"
+                name="accType"
+                value={recordEdit.paymentType}
                 onChange={(e) => handleChangeEdit(e)}
-              />
+              >
+                {" "}
+                <option>Choose</option>
+                {paymentType.map((cat, id) => (
+                  <option key={id} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
             </div>
           </form>
         </div>
