@@ -7,8 +7,8 @@ export default function UseApi() {
   // ?useful variables
   // const context = useContext(ContextProvider);
 
-  const url = "http://localhost:1337/"; //https://bugdet-tracker-mern.herokuapp.com/
-
+  const url = "https://bugdet-tracker-mern.herokuapp.com/"; //https://bugdet-tracker-mern.herokuapp.com/
+  // http://localhost:1337/
   //   const name = "tkn";
   let token = Cookies.get("tkn");
   //  const  getCookie = (cname)=> {
