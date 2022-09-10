@@ -15,7 +15,7 @@ import { NextPageContext } from "next";
 
 const AccDetails = (props) => {
 
-  
+  const [isAccLoading, setisAccLoading] = useState(true)
   const { useGet, usePost, usePut } = UseApi();
   const [records, setrecords] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -194,6 +194,7 @@ setaccounts(account.data.accounts);
     if (status === 200) {
       setaccount(data.account);
       setrecords(data.records);
+      setisAccLoading(false)
       setisLoading(false);
     } else if (status === 403) {
       setisLoading(false);
@@ -272,7 +273,7 @@ setaccounts(account.data.accounts);
           {account.accName ? account.accName.toUpperCase() : "Account Details"}
         </title>
       </Head>
-      <div
+      {isAccLoading? <Loading/> :<div
         className={
           account.accType === "Personal"
             ? "p-3 m-3 rounded-xl bg-personal shadow-md  w-auto md:max-w-xs md:w-64  text-white"
@@ -299,7 +300,7 @@ setaccounts(account.data.accounts);
             </button>
           </div>
         </div>
-      </div>
+      </div>}
       <div className="p-3 m-3 mt-12 rounded-xl bg-background shadow-md  text-white">
         <h2 className="text-3xl p-2 my-1 text-hover font-semibold">
           Transanctions From This Account
