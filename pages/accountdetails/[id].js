@@ -122,7 +122,7 @@ const [accID, setaccID] = useState("");
     setrecordEdit({
       id: rec._id,
       rType: rec.rType,
-      amount: Amount ,
+      amount: parseInt(Amount),
       desc: rec.desc,
       note: rec.note,
       paymentType: rec.paymentType,
