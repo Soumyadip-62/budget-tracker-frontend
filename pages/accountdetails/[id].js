@@ -46,7 +46,7 @@ const [accID, setaccID] = useState("");
     date: "",
   });
   const router = useRouter();
-  const {id} = router.query
+  const id = router.query.id
   
   console.log("query", router.query);
 
@@ -207,6 +207,7 @@ setaccounts(account.data.accounts);
     
     if (!id) {
       router.back()
+    
     }
    
     getUserData();
