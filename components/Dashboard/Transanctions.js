@@ -18,7 +18,7 @@ const Transanctions = () => {
 
     console.log(data, status);
     if (status === 200) {
-      setrecords(data.records.slice(0, 10));
+      setrecords(data.records.slice(0, 5));
       setisLoading(false);
     } else if (status === 403) {
       setisLoading(false);
